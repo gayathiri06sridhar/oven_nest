@@ -1,1 +1,1 @@
-# minicomm
+an e commerce website for selling baked goods. 
