@@ -13,6 +13,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap"
         rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 
 <body>
@@ -175,11 +176,25 @@
             </div>
         </section>
 
-        <!-- Image Lightbox Modal -->
         <div id="imageModal" class="modal">
             <span class="close">&times;</span>
             <img class="modal-content" id="img01">
             <div id="caption"></div>
+        </div>
+
+        <!-- Checkout/Payment Modal -->
+        <div id="checkoutModal" class="modal payment-modal">
+            <div class="modal-content payment-container">
+                <span class="close-payment">&times;</span>
+                <h2>Complete Your Payment</h2>
+                <p>Scan the QR code below using any UPI app (GPay, PhonePe, Paytm, etc.)</p>
+                <div id="qrcode"></div>
+                <div class="payment-details">
+                    <p class="pay-amount">Amount to Pay: <span>₹0</span></p>
+                    <p class="pay-id">UPI ID: shanmugam.sridhar-1@okaxis</p>
+                </div>
+                <button class="btn btn-primary paid-confirm-btn">I Have Paid</button>
+            </div>
         </div>
     </main>
 

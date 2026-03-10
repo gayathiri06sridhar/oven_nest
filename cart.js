@@ -114,5 +114,65 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Checkout and Payment Logic
+    const checkoutModal = document.getElementById('checkoutModal');
+    const closePayment = document.querySelector('.close-payment');
+    const confirmPaidBtn = document.querySelector('.paid-confirm-btn');
+    const qrContainer = document.getElementById('qrcode');
+    let qrcode = null;
+
+    function generateUPIQR(amount) {
+        const upiID = 'shanmugam.sridhar-1@okaxis';
+        const name = 'Sridhar Shanmugam';
+        const upiURL = `upi://pay?pa=${upiID}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR`;
+
+        qrContainer.innerHTML = ''; // Clear previous QR
+        qrcode = new QRCode(qrContainer, {
+            text: upiURL,
+            width: 200,
+            height: 200,
+            colorDark: "#432818",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+    }
+
+    document.querySelector('.checkout-btn').addEventListener('click', () => {
+        let total = 0;
+        cart.forEach(item => total += item.price * item.quantity);
+
+        if (total === 0) {
+            alert("Your cart is empty!");
+            return;
+        }
+
+        checkoutModal.querySelector('.pay-amount span').textContent = `₹${total}`;
+        generateUPIQR(total);
+        checkoutModal.style.display = 'flex';
+        checkoutModal.classList.add('active');
+        closeCart();
+    });
+
+    closePayment.addEventListener('click', () => {
+        checkoutModal.style.display = 'none';
+        checkoutModal.classList.remove('active');
+    });
+
+    confirmPaidBtn.addEventListener('click', () => {
+        alert("Thank you for your payment! Your order is being processed.");
+        cart = [];
+        updateCartUI();
+        checkoutModal.style.display = 'none';
+        checkoutModal.classList.remove('active');
+    });
+
+    // Close checkout modal when clicking outside
+    window.addEventListener('click', (event) => {
+        if (event.target == checkoutModal) {
+            checkoutModal.style.display = 'none';
+            checkoutModal.classList.remove('active');
+        }
+    });
+
     updateCartUI();
 });

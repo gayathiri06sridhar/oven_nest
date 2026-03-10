@@ -591,3 +591,115 @@ footer {
         width: 100%;
     }
 }
+
+/* Payment Modal Styles */
+.payment-modal {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding-top: 0;
+}
+
+.payment-container {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 25px;
+    max-width: 450px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.payment-container h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.payment-container p {
+    color: #666;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+#qrcode {
+    background: white;
+    padding: 1.5rem;
+    display: inline-block;
+    border-radius: 20px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f0f0f0;
+}
+
+#qrcode img {
+    display: block;
+    margin: 0 auto;
+}
+
+.payment-details {
+    background: #fffcf9;
+    padding: 1.25rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    border: 1px dashed var(--accent-color);
+}
+
+.pay-amount {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 0.5rem !important;
+}
+
+.pay-amount span {
+    color: var(--secondary-color);
+}
+
+.pay-id {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 0 !important;
+    word-break: break-all;
+}
+
+.paid-confirm-btn {
+    width: 100%;
+    padding: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.close-payment {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #ccc;
+    transition: color 0.2s;
+}
+
+.close-payment:hover {
+    color: #333;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.payment-modal.active {
+    display: flex;
+    animation: modalFadeIn 0.3s ease-out;
+}
