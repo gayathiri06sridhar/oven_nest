@@ -592,7 +592,7 @@ footer {
     }
 }
 
-/* Payment Modal Styles */
+/* ===== Payment Modal Styles ===== */
 .payment-modal {
     display: none;
     align-items: center;
@@ -617,7 +617,7 @@ footer {
     margin-bottom: 1rem;
 }
 
-.payment-container p {
+.payment-container>p {
     color: #666;
     margin-bottom: 1.5rem;
     font-size: 0.95rem;
@@ -669,8 +669,7 @@ footer {
     width: 100%;
     padding: 1.2rem;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
 }
 
 .close-payment {

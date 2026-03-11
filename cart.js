@@ -114,20 +114,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Checkout and Payment Logic
+    // ===== Two-Step Checkout: QR Code → Google Form =====
     const checkoutModal = document.getElementById('checkoutModal');
     const closePayment = document.querySelector('.close-payment');
     const confirmPaidBtn = document.querySelector('.paid-confirm-btn');
     const qrContainer = document.getElementById('qrcode');
-    let qrcode = null;
+    let qrInstance = null;
 
+    // Build pre-filled Google Form URL from cart contents
+    function buildGoogleFormUrl() {
+        let total = 0;
+        let orderSummary = "";
+        cart.forEach((item, index) => {
+            total += item.price * item.quantity;
+            orderSummary += `${item.name} (${item.quantity}x)${index < cart.length - 1 ? ', ' : ''}`;
+        });
+        const baseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdGIPxqN6ibCLmOFw4h7nx7F-si_QsW_LrogaHeQxkC4XX6BA/viewform";
+        const orderEntryID = "entry.1477813068";
+        return `${baseUrl}?usp=pp_url&${orderEntryID}=${encodeURIComponent(orderSummary + ' | Total: ₹' + total)}`;
+    }
+
+    // Generate UPI QR code for the given amount
     function generateUPIQR(amount) {
         const upiID = 'shanmugam.sridhar-1@okaxis';
         const name = 'Sridhar Shanmugam';
         const upiURL = `upi://pay?pa=${upiID}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR`;
-
-        qrContainer.innerHTML = ''; // Clear previous QR
-        qrcode = new QRCode(qrContainer, {
+        qrContainer.innerHTML = '';
+        qrInstance = new QRCode(qrContainer, {
             text: upiURL,
             width: 200,
             height: 200,
@@ -137,6 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Step 1: Open QR modal on Checkout click
     document.querySelector('.checkout-btn').addEventListener('click', () => {
         let total = 0;
         cart.forEach(item => total += item.price * item.quantity);
@@ -153,25 +167,28 @@ document.addEventListener('DOMContentLoaded', () => {
         closeCart();
     });
 
+    // Close QR modal
     closePayment.addEventListener('click', () => {
         checkoutModal.style.display = 'none';
         checkoutModal.classList.remove('active');
     });
 
-    confirmPaidBtn.addEventListener('click', () => {
-        alert("Thank you for your payment! Your order is being processed.");
-        cart = [];
-        updateCartUI();
-        checkoutModal.style.display = 'none';
-        checkoutModal.classList.remove('active');
-    });
-
-    // Close checkout modal when clicking outside
     window.addEventListener('click', (event) => {
-        if (event.target == checkoutModal) {
+        if (event.target === checkoutModal) {
             checkoutModal.style.display = 'none';
             checkoutModal.classList.remove('active');
         }
+    });
+
+    // Step 2: "I Have Paid" → redirect to Google Form pre-filled with order, clear cart
+    confirmPaidBtn.addEventListener('click', () => {
+        const formUrl = buildGoogleFormUrl();
+        cart = [];
+        localStorage.setItem('oven_nest_cart', JSON.stringify(cart));
+        updateCartUI();
+        checkoutModal.style.display = 'none';
+        checkoutModal.classList.remove('active');
+        window.open(formUrl, '_blank');
     });
 
     updateCartUI();
